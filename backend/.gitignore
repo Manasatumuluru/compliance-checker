@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Builds / generated
+dist
+.generated
+generated
+/generated/prisma
+node_modules/.prisma
+
+# Env / secrets
+.env
+.env.local
+
+# Misc
+coverage
+*.sqlite

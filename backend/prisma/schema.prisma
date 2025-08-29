@@ -1,0 +1,43 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Business {
+  id        Int      @id @default(autoincrement())
+  name      String
+  industry  String
+  state     String
+  employees Int
+  checks    ComplianceCheck[]
+  createdAt DateTime @default(now())
+}
+
+model Rule {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  category     String
+  jurisdiction String
+  industry     String
+  minEmployees Int
+  maxEmployees Int
+  description  String
+  createdAt    DateTime @default(now())
+  checks       ComplianceCheck[]
+}
+
+model ComplianceCheck {
+  id         Int      @id @default(autoincrement())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId Int
+  rule       Rule     @relation(fields: [ruleId], references: [id])
+  ruleId     Int
+  createdAt  DateTime @default(now())
+
+  @@index([businessId])
+  @@index([ruleId])
+}
